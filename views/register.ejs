@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduConnect - Connexion</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  </head>
+
+  <body class="bg-light">
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+          <!-- Carte de connexion -->
+          <div class="card shadow">
+            <div class="card-body">
+              <div class="text-center">
+                <div class="text-center">
+                  <img src="/img/logo.png" alt="" srcset="" width="80px"
+                  height="80px" style="border-radius: 50%;"">
+                </div>
+              </div>
+              <h2 class="card-title text-center mt-2">Inscription</h2>
+
+              <!-- Formulaire de connexion -->
+              <form
+                accept="/users/register"
+                method="post"
+                id="loginForm"
+                novalidate
+              >
+                <% if (erreur){ %>
+                <div class="alert alert-danger" role="alert"><%= erreur %></div>
+                <% } %> <% if (warning){ %>
+                <div class="alert alert-warning" role="alert">
+                  <%= warning %>
+                </div>
+                <% } %> <% if (message){ %>
+                <div class="alert alert-success" role="alert">
+                  <%= message %>
+                </div>
+                <% } %>
+
+                <div class="mb-3">
+                  <input
+                    type="text"
+                    name="full_name"
+                    class="form-control"
+                    id="email"
+                    placeholder="Nom complet"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Adresse mail"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="Mot de passe"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Rôle</label>
+                  <select name="type_user" id="" class="form-select">
+                    <option value="étudiant">Etudiant</option>
+                    <option value="professeur">Professeur</option>
+                  </select>
+                </div>
+
+                <input
+                  type="submit"
+                  class="btn btn-primary w-100 mb-3"
+                  value="S'inscrire"
+                />
+              </form>
+
+              <div class="text-center">
+                <a href="/"> Se connecter </a>
+              </div>
+
+              <hr />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

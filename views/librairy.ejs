@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduConnect - Bibliothèque</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">EduConnect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/libraries">Bibliothèque</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/libraries/forum">Forum</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Mon apprentissage</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Déconnexion</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Fénêtre pour la déconnexion -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Vous-voulez quitter la session</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <span>Confirmer ou garder la session</span>
+        </div>
+        <div class="modal-footer">
+          <a href="/logout" class="btn btn-success">Quitter</a>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fénêtre modale pour le profil utilisateur -->
+
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Profil utilisateur</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Email: <%= email %>
+          </p>
+          <p>Role: <%= role %>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Header with Actions -->
+    <% if (success_msg && success_msg.length> 0) { %>
+      <div class="d-flex justify-content-between align-items-center mb-4 alert alert-success" role="alert">
+        <%= success_msg[0] %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+        <% if (error_msg && error_msg.length> 0) { %>
+          <div class="d-flex justify-content-between align-items-center mb-4 alert alert-danger" role="alert">
+            <%= error_msg[0] %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <% } %>
+
+            <!-- Contenu principal -->
+            <div class="container mt-4">
+              
+              <!-- Onglets -->
+              <ul class="nav nav-tabs" id="libraryTabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="manuels-tab" data-bs-toggle="tab" href="#manuels">📖 Manuels</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="videos-tab" data-bs-toggle="tab" href="#videos">🎥 Vidéos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="exercices-tab" data-bs-toggle="tab" href="#exercices">📝 Exercices</a>
+                </li>
+              </ul>
+
+              <!-- Contenu des onglets -->
+              <div class="tab-content mt-3" id="libraryTabsContent">
+                <!-- Manuels -->
+                <div class="tab-pane fade show active" id="manuels">
+                  <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                      <div class="card h-100">
+
+                        <div class="card-body">
+                          <% for (let i=0; i<coursesDocuments.length; i++){ %>
+                            <h5 class="card-title">
+                              <%= coursesDocuments[i].title %>
+                            </h5>
+                            <p class="card-text">Niveau: <%= coursesDocuments[i].level %>
+                            </p>
+                            <a href="http://localhost:4400/uploads/<%= coursesDocuments[i].url %>"
+                              class="btn btn-success mt-2" download>
+                              <i class="bi bi-download"></i>
+                            </a>
+                            <a href="http://localhost:4400/uploads/<%= coursesDocuments[i].url %>"
+                              class="btn btn-primary mt-2 me-2" target="_blank">
+                              <i class="bi bi-file-earmark-pdf"></i>
+                            </a>
+
+                            <hr>
+                            <% } %>
+                        </div>
+                      </div>
+
+                    </div>
+                    <!-- Ajoutez d'autres manuels ici -->
+                  </div>
+                </div>
+
+                <!-- Vidéos -->
+                <div class="tab-pane fade" id="videos">
+                  <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                      <div class="card h-100">
+                        <div class="card-body">
+                          <% for (let i=0; i<coursesVideos.length; i++){ %>
+                            <h5 class="card-title">
+                              <%= coursesVideos[i].title %>
+                            </h5>
+                            <p class="card-text">Durée: <%= coursesVideos[i].during %>
+                            </p>
+                            <a href="http://localhost:4400/uploads/<%= coursesVideos[i].url %>"
+                              class="btn btn-success mt-2" target="_blank">
+                              <i class="bi bi-download"></i>
+                            </a>
+                            <a href="/libraries/view-video/<%= coursesVideos[i]._id %>"
+                              class="btn btn-primary mt-2">
+                              <i class="bi bi-play"></i>
+                            </a>
+                            <hr>
+                            <% } %>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Ajoutez d'autres vidéos ici -->
+                  </div>
+                </div>
+
+                <!-- Exercices -->
+                <div class="tab-pane fade" id="exercices">
+                  <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col">
+                      <div class="card h-100">
+                        <div class="card-body">
+                          <h5 class="card-title">Pas de fonctionnalité</h5>
+                          <p class="card-text">disponible pour l'instant</p>
+                          <button class="btn btn-primary">A implémenter</button>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Ajoutez d'autres exercices ici -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scripts -->
+            <script src="/js/bootstrap.bundle.min.js"></script>
+            <script src="/js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduConnect - Bibliothèque</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/chat.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">EduConnect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="/libraries">Bibliothèque</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/libraries/forum">Forum</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Mon apprentissage</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Déconnexion</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Fénêtre pour la déconnexion -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Vous-voulez quitter la session</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <span>Confirmer ou garder la session</span>
+        </div>
+        <div class="modal-footer">
+          <a href="/logout" class="btn btn-success">Quitter</a>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fénêtre modale pour le profil utilisateur -->
+
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Profil utilisateur</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Email: <%= email %>
+          </p>
+          <p>Role: <%= role %>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid p-4">
+    <!-- Header with Actions -->
+    <% if (success_msg && success_msg.length> 0) { %>
+      <div class="d-flex justify-content-between align-items-center mb-4 alert alert-success" role="alert">
+        <%= success_msg[0] %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+        <% if (error_msg && error_msg.length> 0) { %>
+          <div class="d-flex justify-content-between align-items-center mb-4 alert alert-danger" role="alert">
+            <%= error_msg[0] %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <% } %>
+
+            <div class="container mt-4">
+              <!-- En-tête du forum -->
+              <div class="row mb-4">
+                <div class="col-md-8">
+                  <p class="lead">Réponses proposées</p>
+                </div>
+              </div>
+
+              <!-- Liste des questions -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="list-group"
+
+                    <% if (response.length >0){ %>
+                      <!-- Question -->
+                      <% for(let i=0; i<response.length; i++){ %>
+                      <div class="list-group-item">
+                        
+                        <div class="d-flex w-100 justify-content-between">
+                          <h5 class="mb-1 fw-bold"><%= response[i].user_id.full_name %></h5>
+                          <small><%= moment(response[i].createdAt).fromNow() %></small>
+                        </div>
+                       
+                        <blockquote><%= response[i].opinion  %></blockquote>
+                      </div>
+                      <% } %>
+                    <% }else {%>
+                      Aucune donnée.
+                    <% }%>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          
+
+
+
+
+            <!-- Scripts -->
+            <script src="/js/bootstrap.bundle.min.js"></script>
+            <script src="/js/admin.js"></script>
+</body>
+
+</html>

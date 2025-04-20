@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduConnect Admin - Gestion des Cours</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body>
+    <div class="d-flex">
+      <!-- Sidebar -->
+      <div class="sidebar bg-dark text-white">
+        <div class="sidebar-heading p-3">
+          <i class="bi bi-gear-fill"></i> EduConnect User
+        </div>
+        <div class="list-group list-group-flush">
+          <a
+            href="/teacher/space"
+            class="list-group-item list-group-item-action active"
+          >
+            <i class="bi bi-book"></i> Cours
+          </a>
+        </div>
+        <div class="list-group list-group-flush">
+          <a
+            href="/teacher/space/questions"
+            class="list-group-item list-group-item-action active"
+          >
+          <i class="bi bi-question-circle"></i> Questionnaires
+          </a>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <button class="btn btn-link sidebar-toggle">
+              <i class="bi bi-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+              <div class="dropdown">
+                <button
+                  class="btn btn-link dropdown-toggle"
+                  type="button"
+                  id="adminDropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="bi bi-person-circle"></i> <%= email %>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      data-bs-toggle="modal"
+                      data-bs-target="#profileModal"
+                    >
+                      <i class="bi bi-person"></i> Profil
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      ><i class="bi bi-box-arrow-right"></i> Déconnexion</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Vous-voulez quitter la session
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <span>Confirmer ou garder la session</span>
+              </div>
+              <div class="modal-footer">
+                <a href="/logout" class="btn btn-success">Quitter</a>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="modal fade"
+          id="profileModal"
+          tabindex="-1"
+          aria-labelledby="profileModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="profileModalLabel">
+                  Profil de l'utilisateur
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Fermer"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <p><strong>Email :</strong> <%= email %></p>
+                <p><strong>Rôle :</strong> <%= role %></p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Fermer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Courses Content -->
+        <div class="container-fluid p-4">
+          <!-- Header with Actions -->
+          <% if (success_msg && success_msg.length > 0) { %>
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 alert alert-success"
+            role="alert"
+          >
+            <%= success_msg[0] %>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          <% } %> <% if (error_msg && error_msg.length > 0) { %>
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 alert alert-danger"
+            role="alert"
+          >
+            <%= error_msg[0] %>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          <% } %>
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Les réponses</h2>
+
+          </div>
+
+        </div>
+
+        <div class="contanter-fluid p-4">
+          <div class="col-12">
+            <div class="list-group">
+                
+              <% if (responses.length >0){ %>
+                <!-- Question -->
+                <% for(let i=0; i<responses.length; i++){ %>
+                  <div class="list-group-item">
+                    
+                    <div class="d-flex w-100 justify-content-between">
+                      <small><%= moment(responses[i].createdAt).fromNow() %></small>
+                    </div>
+                      <blockquote class="fw-bold"><%= responses[i].user_id.full_name  %></blockquote>
+                      <span><%= responses[i].opinion  %></span>
+                  </div>
+                <% } %>
+               
+              <% } else {%>
+                Aucune donnée.
+              <% } %>
+
+            </div>
+        </div>
+        </div>
+
+    </div>
+
+
+   
+    
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

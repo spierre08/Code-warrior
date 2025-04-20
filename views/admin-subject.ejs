@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect Admin - Gestion des Cours</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar bg-dark text-white">
+            <div class="sidebar-heading p-3">
+                <i class="bi bi-gear-fill"></i> EduConnect Admin
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="/admin/dashbord" class="list-group-item list-group-item-action">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+                <a href="/admin/dashbord/subject" class="list-group-item list-group-item-action active">
+                    <i class="bi bi-card-text"></i>Matières
+                </a>
+                <a href="/admin/dashbord/users" class="list-group-item list-group-item-action">
+                    <i class="bi bi-people"></i> Utilisateurs
+                </a>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button class="btn btn-link sidebar-toggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div class="ms-auto d-flex align-items-center">
+                        <div class="dropdown">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="adminDropdown"
+                                data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i>
+                                <%= email %>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#profileModal">
+                                        <i class="bi bi-person"></i> Profil
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"><i class="bi bi-box-arrow-right"></i> Déconnexion</a>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container mt-3">
+                <% if (success_msg && success_msg.length> 0) { %>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <%= success_msg[0] %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <% } %>
+
+                        <% if (error_msg && error_msg.length> 0) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <%= error_msg[0] %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                            </div>
+                            <% } %>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Vous-voulez quitter la session</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <span>Confirmer ou garder la session</span>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="/logout" class="btn btn-success">Quitter</a>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Modal -->
+            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="profileModalLabel">Profil de l'utilisateur</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Fermer"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Email :</strong>
+                                <%= email %>
+                            </p>
+                            <p><strong>Rôle :</strong>
+                                <%= role %>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Courses Content -->
+            <div class="container-fluid p-4">
+                <!-- Header with Actions -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Gestion des matières</h2>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCourseModal">
+                            <i class="bi bi-plus-circle"></i> Nouvelle manière
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="row mb-4">
+                    <form action="/admin/dashbord/subject" method="get" class="d-flex">
+                        <div class="col-md-3">
+                            <input type="text" name="name" class="form-control" placeholder="Rechercher une manière...">
+                        </div>
+                        <div class="col-md-3 px-4">
+                            <input type="submit" class="btn btn-primary w-100 mb-3" value="Rechercher" />
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Courses Table -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Matière</th>
+                                        <th>Date de création</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <% if (subject.length> 0){ %>
+                                    <tbody id="coursesTableBody">
+                                        <!-- Exemple de ligne -->
+                                        <% for(let i=0; i<subject.length; i++){ %>
+                                            <tr>
+                                                <td>
+                                                    <%= subject[i].name %>
+                                                </td>
+                                                <td>
+                                                    <%= subject[i].createdAt.toLocaleDateString() %>4
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="/admin/dashbord/subject/delete/<%= subject[i]._id %>"
+                                                            class="btn btn-sm btn-danger"><i
+                                                                class="bi bi-trash"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                    </tbody>
+                                    <% } else{ %>
+                                        <p>Aucun résultat</p>
+                                        <% } %>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Course Modal -->
+    <div class="modal fade" id="newCourseModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouvelle matières</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/dashbord/subject" method="post" id="newUserForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nom complet</label>
+                            <input type="text" name="name" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-secondary w-100 mb-3" data-bs-dismiss="modal">
+                                Annuler
+                            </button>
+                            <input type="submit" class="btn btn-primary w-100 mb-3" value="Enrégistrer" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>

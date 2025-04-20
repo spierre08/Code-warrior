@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduConnect Admin - Gestion des Utilisateurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+</head>
+
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar bg-dark text-white">
+            <div class="sidebar-heading p-3">
+              <i class="bi bi-gear-fill"></i> EduConnect Admin
+            </div>
+            <div class="list-group list-group-flush">
+              <a
+                href="/admin/dashbord"
+                class="list-group-item list-group-item-action active"
+              >
+                <i class="bi bi-speedometer2"></i> Dashboard
+              </a>
+              <a
+                href="/admin/dashbord/subject"
+                class="list-group-item list-group-item-action"
+              >
+              <i class="bi bi-card-text"></i>Matières
+              </a>
+              <a
+                href="/admin/dashbord/users"
+                class="list-group-item list-group-item-action"
+              >
+                <i class="bi bi-people"></i> Utilisateurs
+              </a>
+            </div>
+          </div>
+    
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button class="btn btn-link sidebar-toggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div class="ms-auto d-flex align-items-center">
+                        <div class="dropdown">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="adminDropdown"
+                                data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i>
+                                <%= email %>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                        <i class="bi bi-person"></i> Profil
+                                      </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+                                <li>
+                                      <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-box-arrow-right"></i> Déconnexion</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container mt-3">
+                <% if (success_msg && success_msg.length > 0) { %>
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= success_msg[0] %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                <% } %>
+              
+                <% if (error_msg && error_msg.length > 0) { %>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= error_msg[0] %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                <% } %>
+            </div>
+
+            <!-- Fénêtre modale pour la déconnexion -->
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Vous-voulez quitter la session</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <span>Confirmer ou garder la session</span>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/logout" class="btn btn-success">Quitter</a>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                <!-- Profile Modal -->
+             <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="profileModalLabel">Profil de l'utilisateur</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                  <p><strong>Email :</strong> <%= email %></p>
+                  <p><strong>Rôle :</strong> <%= role %></p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+
+            <!-- Users Content -->
+            <div class="container-fluid p-4">
+                <!-- Header with Actions -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Gestion des Utilisateurs</h2>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newUserModal">
+                            <i class="bi bi-person-plus"></i> Nouvel Utilisateur
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="row mb-4">
+                    <form method="get" action="/admin/dashbord/users" class="mb-3">
+                        <div style="display: flex; gap: 1rem;">
+                          <input
+                            type="text"
+                            name="q"
+                            value="<%= search || '' %>"
+                            placeholder="Rechercher par nom ou email"
+                            class="form-control"
+                          />
+                      
+                          <select name="type_user" class="form-control">
+                            <option value="étudiant" <%= selectedType === "étudiant" ? "selected" : "" %>>Étudiant</option>
+                            <option value="professeur" <%= selectedType === "professeur" ? "selected" : "" %>>Professeur</option>
+                          </select>
+                      
+                          <button type="submit" class="btn btn-primary">Rechercher</button>
+                        </div>
+                      </form>
+                </div>
+                <!-- Users Table -->
+                <div class="card">
+                    
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Rôle</th>
+                                        <th>Date d'inscription</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <% if (users.length> 0){ %>
+                                    <tbody id="usersTableBody">
+                                        <% for(let i=0; i<users.length; i++){ %>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://via.placeholder.com/32"
+                                                            class="rounded-circle me-2" alt="" />
+                                                        <%= users[i].full_name %>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <%= users[i].email %>
+                                                </td>
+                                                <td>
+                                                    <%= users[i].type_user %>
+                                                </td>
+                                                <td>
+                                                    <%= users[i].createdAt.toLocaleDateString() %>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="/admin/dashbord/users/delete/<%= users[i]._id %>" class="btn btn-sm btn-danger"><i class="bi bi-person-x"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                    </tbody>
+                                    <% }else{ %>
+                                        <p>Aucun résultat</p>
+                                        <% } %>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+    <!-- New User Modal -->
+    <div class="modal fade" id="newUserModal" tabindex="-1">
+ 
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouvel Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/dashbord/users" method="post" id="newUserForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nom complet</label>
+                            <input type="text" name="full_name" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rôle</label>
+                            <select name="type_user" class="form-select" required>
+                                <option value="étudiant">Étudiant</option>
+                                <option value="professeur">Enseignant</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mot de passe temporaire</label>
+                            <input type="password" name="password" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-secondary w-100 mb-3" data-bs-dismiss="modal">
+                                Annuler
+                            </button>
+                            <input
+                          type="submit"
+                          class="btn btn-primary w-100 mb-3"
+                          value="Enrégistrer"
+                        />
+                        </div>
+                    </form>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>
